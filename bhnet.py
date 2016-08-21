@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import socket
 import getopt
@@ -34,7 +36,7 @@ def usage():
 
 def client_sender(buffer):
     
-    client = socket.socket(socket_AF_INET, socket.SOCK_STREAM)
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try:
         
@@ -77,7 +79,7 @@ def server_loop():
     if not len(target):
         target = "0.0.0.0"
       
-    server = socket.socket(socket.AF_INIT, socket.SOCK_STREAM)
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((target, port))
     server.listen(5)
     
@@ -184,8 +186,9 @@ def main():
     # read the commandline options
     
     try:
-        opts, args = getopt(sys.argv[1:],"hle:t:p:cu:",
-                            ["help","listen","execute","target","port","command","upload"])
+        opts, args = getopt.getopt(sys.argv[1:],"hle:t:p:cu:",
+                            ["help","listen","execute",
+                             "target","port","command","upload"])
     except getopt.GetoptError as err:
         print str(err)
         usage()
@@ -193,17 +196,17 @@ def main():
     for o, a in opts:
         if o in ("-h","--help"):
             usage()
-        if o in ("-l","--listen"):
+        elif o in ("-l","--listen"):
             listen = True
-        if o in ("-e", "--execute"):
+        elif o in ("-e", "--execute"):
             execute = a
-        if o in ("-c",  "--commandshell"):
+        elif o in ("-c",  "--commandshell"):
             command = True
-        if o in ("-u", "--upload"):
+        elif o in ("-u", "--upload"):
             upload_destination = a
-        if o in ("-t", "--target"):
+        elif o in ("-t", "--target"):
             target = a
-        if o in ("-p", "--port"):
+        elif o in ("-p", "--port"):
             port = int(a)
         else:
             assert False, "Unhandled Option"
