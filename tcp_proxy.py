@@ -9,7 +9,7 @@ def server_loop(local_host, local_port, remote_host, remote_port, receive_first)
     try:
         server.bind((local_host, local_port))
     except:
-        print "[!!] Failed to listend on %s%d" % (local_host, local_port)
+        print "[!!] Failed to listen on %s%d" % (local_host, local_port)
         print "[!!] Check for other listening sockets ot correct permissions"
         sys.exit(0)
         
