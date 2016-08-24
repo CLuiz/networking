@@ -131,6 +131,16 @@ def receive_from(connection):
     
     return buffer
 
+#modify and requests destined for the remote host
+def request_handler(buffer):
+    #perform packet modifications
+    return buffer
+
+#modify any repsonse destined for the local host
+def response_handler(buffer):
+    #perform packet modifications
+    return buffer
+
         
         
     
