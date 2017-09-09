@@ -35,40 +35,32 @@ def usage():
     sys.exit(0)
 
 def client_sender(buffer):
-    
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try:
-        
         #connect to our target host
         client.connect((target, port))
         if len(buffer):
             client.send(buffer)
         while True:
-            
             #now wait for data back
             recv_len=1
             response = ""
-            
             while recv_len:
-                
                 data      = client.recv(4096)
                 recv_len  = len(data)
                 response += data
-            
+
             print response,
-            
             #wait for more input
             buffer  = raw_input("")
             buffer += "\n"
-            
+         
             #send it off
             client.send(buffer)
         
     except:
-            
             print "[*] Exception! Exiting."
-            
             #tear down connection
             client.close()
             
@@ -85,26 +77,22 @@ def server_loop():
     
     while True:
         client_socket, addr = server.accept()
-        
         #spin off a thread to handle our new client
         client_thread =threading.Thread(target=client_handler,
                                         args=(client_socket,))
         client_thread.start()
 
 def run_command(command):
-    
     #trim the newline
     command = command.rstrip()
-    
+  
     #run the command and get the output back
     try:
         output = subprocess.check_output(command, 
                                          stderr=subprocess.STDOUT,
                                          shell=True)
-    except:
-        
+    except:      
         output = "Failed to execute command.\r\n"
-        
     #send output back to client
     return output
 
@@ -138,13 +126,11 @@ def client_handler(client_socket):
                                upload_destination)
             
         except:
-            
             client_socket.send("Failed to save file to %s\r\n" %
                                upload_destination)
     
     #check for command execution
-    if len(execute):
-        
+    if execute:
         #run the command
         output = run_command(execute)
         
@@ -152,13 +138,11 @@ def client_handler(client_socket):
         
     #now we go into another loop if a command shell was requested
     if command:
-        
         while True:
             #show a simple prompt
             client_socket.send("<BHP:#> ")
             
             # now we receive until we see a linefeed (enter key)
-            
             cmd_buffer = ""
             while "\n" not in cmd_buffer:
                 cmd_buffer += client_socket.recv(1024)
@@ -169,8 +153,6 @@ def client_handler(client_socket):
             #send back the response
             client_socket.send(response)
             
-                                         
-    
         
 def main():
     global listen
