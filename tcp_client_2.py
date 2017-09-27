@@ -1,19 +1,26 @@
 import socket
 
-target_host = 'www.google.com'
-target_port = 80
 
-#create a socket object
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def main():
+    target_host = 'www.google.com'
+    target_port = 80
 
-#connect the client
-client.connect((target_host, target_port))
+    # create a socket object
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-#send some data
-client.send('GET / HTTP/1.1\r\nHost: google.com\r\n\r\n')
+    # connect the client
+    client.connect((target_host, target_port))
 
-#receive some data
+    # send some data
+    client.send('GET / HTTP/1.1\r\nHost: google.com\r\n\r\n')
 
-response = client.recv(4096)
+    # receive some data
+    response = client.recv(4096)
 
-print response
+    print(response)
+
+    return True
+
+
+if __name__ == '__main__':
+    main()
