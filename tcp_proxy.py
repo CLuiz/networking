@@ -41,7 +41,7 @@ def proxy_handler(client_socket, remote_host, remote_port, receive_first):
 
     # receive data from the remote end if necessary
     if receive_first:
-        remote_buffer = recieve_from(remote_socket)
+        remote_buffer = receive_from(remote_socket)
         hexdump(remote_buffer)
 
         # send it to our response handler
@@ -55,7 +55,7 @@ def proxy_handler(client_socket, remote_host, remote_port, receive_first):
         # rinse, wash, repeat
         while True:
             # read from local host
-            local_buffer_ = receive_from(client_socket)
+            local_buffer = receive_from(client_socket)
             if len(local_buffer):
                 print("[==>] Received %d bytes from localhost." %
                       len(local_buffer))
@@ -91,13 +91,13 @@ def hexdump(src, length=16):
     # this hexdump function is taken directly from:
     # http://code.activestate.com/recipes/142812-hex-dumper/
 
-    results = []
+    result = []
     digits = 4 if isinstance(src, unicode) else 2
-    for i in xrange(0, len(src), length):
+    for i in range(0, len(src), length):
         s = src[i:i+length]
         hexa = b' '.join(["%0*X" % (digits, ord(x)) for x in s])
         text = b''.join([x if 0x20 <= ord(x) < 0x7F else b'.' for x in s])
-        result.append(b"%04X %-*s %s" % (i, lenght*(digits+1), hexa, text))
+        result.append(b"%04X %-*s %s" % (i, length * (digits+1), hexa, text))
 
     print(b'\n'.join(result))
 
